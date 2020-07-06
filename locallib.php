@@ -1056,14 +1056,21 @@ function attendance_strftimehm($time) {
                 $userdate .= 'am';
             }
         }
+        // START UCLA MOD: CCLE-9402 - Replace 'am'/'pm' with 'AM'/'PM'.
+        // Don't need to check this here because now we're always doing it before returning.
+        // Original comment:
         // Some locales and O/S don't respect correct intended case of %p vs %P
         // This can cause problems with behat which expects AM vs am.
-        if (strpos($format, '%p')) { // Should be upper case according to PHP spec.
-            $userdate = str_replace('am', 'AM', $userdate);
-            $userdate = str_replace('pm', 'PM', $userdate);
-        }
+        // if (strpos($format, '%p')) { // Should be upper case according to PHP spec.
+        //     $userdate = str_replace('am', 'AM', $userdate);
+        //     $userdate = str_replace('pm', 'PM', $userdate);
+        // }
     }
 
+    // Make sure all 'AM' and 'PM' are uppercase.
+    $userdate = str_replace('am', 'AM', $userdate);
+    $userdate = str_replace('pm', 'PM', $userdate);
+    // END UCLA MOD: CCLE-9402.
     return $userdate;
 }
 
